@@ -7,6 +7,11 @@ import os
 
 app = FastAPI()
 
+origins = [
+    "https://your-frontend-railway-url.railway.app", # Replace with your actual frontend URL
+    "http://localhost:3000" # For local development
+]
+
 # Enable CORS for all origins (you can restrict this later)
 app.add_middleware(
     CORSMiddleware,

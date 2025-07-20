@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Document Q&A Bot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #1b1b2f;
+      color: #fff;
+      padding: 30px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #2d2d44;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    input[type="file"], input[type="text"] {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+      border-radius: 5px;
+      border: none;
+    }
+    button {
+      padding: 8px 15px;
+      margin-top: 5px;
+      cursor: pointer;
+      background-color: #00adb5;
+      border: none;
+      color: white;
+      border-radius: 5px;
+    }
+    .answer {
+      margin-top: 20px;
+      padding: 15px;
+      background: #222;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Upload Document</h2>
+    <input type="file" id="fileInput" />
+    <button onclick="uploadFile()">Upload</button>
+
+    <h3>Ask a Question</h3>
+    <input type="text" id="questionInput" placeholder="Type your question here..." />
+    <button onclick="submitQuestion()">Ask</button>
+
+    <div class="answer" id="answerBox">Answer will appear here...</div>
+  </div>
+
+  <script>
+    function uploadFile() {
+      const fileInput = document.getElementById("fileInput");
+      const file = fileInput.files[0];
+      if (!file) {
+        alert("Please select a file.");
+        return;
+      }
+      const formData = new FormData();
+      formData.append("file", file);
+
+      fetch("http://localhost:8000/upload", {
+        method: "POST",
+        body: formData,
+      })
+      .then(res => res.json())
+      .then(data => alert(data.message))
+      .catch(err => alert("Upload failed"));
+    }
+
+    function submitQuestion() {
+      const question = document.getElementById("questionInput").value.trim();
+      if (!question) {
+        alert("Please enter a question.");
+        return;
+      }
+
+      fetch("http://localhost:8000/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question }),
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("answerBox").innerText = data.answer;
+      })
+      .catch(err => {
+        document.getElementById("answerBox").innerText = "Error fetching answer.";
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,2 +1,3 @@
 fastapi
-uvicorn[standard]
+uvicorn
+# any other Python packages your FastAPI app uses (e.g., pandas, numpy, etc.)

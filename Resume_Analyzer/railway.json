@@ -1,5 +1,14 @@
 {
+  "$schema": "https://railway.app/railway.schema.json",
+  "name": "resume-analyzer-backend", // A descriptive name for your backend service
+  "root": "Resume_Analyzer",         // Tell Railway the root of THIS service is 'Resume_Analyzer'
   "build": {
-    "dockerfilePath": "Dockerfile"
+    "dockerfile": "./Dockerfile"     // Path to the Dockerfile relative to "root"
+  },
+  "deploy": {
+    "startCommand": "uvicorn main:app --host 0.0.0.0 --port $PORT" // Use $PORT for Railway
+  },
+  "ports": {
+    "8000": "http" // Inform Railway that port 8000 is for HTTP traffic (optional, but good practice)
   }
 }
